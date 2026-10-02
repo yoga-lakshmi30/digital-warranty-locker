@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Warranty Locker</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 20px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        /* MAIN */
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* CARDS */
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.07);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #1e3a8a;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* BUTTON */
+
+        .primary-btn {
+            width: 100%;
+            margin-top: 20px;
+
+            padding: 13px;
+
+            background: #2563eb;
+            color: white;
+
+            border: none;
+            border-radius: 7px;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* MESSAGE */
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* SEARCH */
+
+        .search-box {
+            margin-top: 10px;
+        }
+
+        /* WARRANTY CARD */
+
+        .warranty-card {
+            background: #f8fafc;
+
+            padding: 20px;
+
+            margin-top: 15px;
+
+            border-radius: 10px;
+
+            border-left: 5px solid #2563eb;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .warranty-card h3 {
+            margin-top: 0;
+            color: #1e3a8a;
+        }
+
+        .warranty-card p {
+            margin: 8px 0;
+        }
+
+        /* STATUS */
+
+        .status {
+            padding: 10px;
+            margin-top: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .valid-status {
+            color: #15803d;
+            background: #dcfce7;
+        }
+
+        .soon-status {
+            color: #b45309;
+            background: #fef3c7;
+        }
+
+        .expired-status {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        /* ACTION BUTTONS */
+
+        .action-btn {
+            width: 48%;
+            margin-top: 15px;
+            padding: 11px;
+
+            border: none;
+            border-radius: 6px;
+
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .edit-btn {
+            background: #16a34a;
+        }
+
+        .edit-btn:hover {
+            background: #15803d;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        /* EDIT */
+
+        .edit-section {
+            display: none;
+
+            background: #eff6ff;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            margin-top: 20px;
+
+            border: 1px solid #bfdbfe;
+        }
+
+        .edit-section h2 {
+            color: #1d4ed8;
+        }
+
+        .cancel-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+
+            background: #64748b;
+            color: white;
+
+            border: none;
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background: #475569;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 18px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- LOGIN CHECK -->
+
+<script>
+
+    if (sessionStorage.getItem("loggedIn") !== "true") {
+
+        window.location.href = "/login";
+
+    }
+
+</script>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div>
+
+        <h1>
+            Digital Warranty Locker
+        </h1>
+
+        <p>
+            Secure Warranty Management System
+        </p>
+
+    </div>
+
+
+    <button
+        class="logout-btn"
+        onclick="logout()">
+
+        Logout
+
+    </button>
+
+</header>
+
+
+<!-- MAIN -->
+
+<div class="container">
+
+
+    <!-- ADD WARRANTY -->
+
+    <div class="card">
+
+        <h2>
+            Add New Warranty
+        </h2>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="Enter product name">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Brand
+                </label>
+
+                <input
+                    type="text"
+                    id="brand"
+                    placeholder="Enter brand name">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Purchase Date
+                </label>
+
+                <input
+                    type="date"
+                    id="purchaseDate">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Warranty Expiry Date
+                </label>
+
+                <input
+                    type="date"
+                    id="warrantyExpiryDate">
+
+            </div>
+
+
+            <div class="form-group full-width">
+
+                <label>
+                    Bill / Invoice
+                </label>
+
+                <input
+                    type="file"
+                    id="bill">
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="addWarranty()">
+
+            + Add Warranty
+
+        </button>
+
+
+        <div id="message"></div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="card">
+
+        <h2>
+            Search Warranty
+        </h2>
+
+
+        <input
+            type="text"
+            id="searchProduct"
+            placeholder="Search by product name"
+            onkeyup="searchWarranty()">
+
+
+        <button
+            class="primary-btn"
+            onclick="viewWarranties()">
+
+            View All Warranties
+
+        </button>
+
+    </div>
+
+
+    <!-- EDIT -->
+
+    <div
+        class="edit-section"
+        id="editSection">
+
+        <h2>
+            Edit Warranty
+        </h2>
+
+
+        <input
+            type="hidden"
+            id="editId">
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="editProductName">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Brand
+                </label>
+
+                <input
+                    type="text"
+                    id="editBrand">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Purchase Date
+                </label>
+
+                <input
+                    type="date"
+                    id="editPurchaseDate">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Warranty Expiry Date
+                </label>
+
+                <input
+                    type="date"
+                    id="editWarrantyExpiryDate">
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="updateWarranty()">
+
+            Update Warranty
+
+        </button>
+
+
+        <button
+            class="cancel-btn"
+            onclick="cancelEdit()">
+
+            Cancel
+
+        </button>
+
+    </div>
+
+
+    <!-- WARRANTY LIST -->
+
+    <div class="card">
+
+        <h2>
+            My Warranties
+        </h2>
+
+        <div id="warrantyList">
+
+            <p>
+                Click "View All Warranties" to display your warranties.
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<footer>
+
+    Digital Warranty Locker © 2026
+
+</footer>
+
+
+<script>
+
+
+/* ================================
+   LOGOUT
+   ================================ */
+
+function logout() {
+
+    sessionStorage.clear();
+
+    window.location.href = "/logout";
+
+}
+
+
+/* ================================
+   ADD WARRANTY
+   ================================ */
+
+function addWarranty() {
+
+    const productName =
+        document.getElementById("productName")
+        .value.trim();
+
+    const brand =
+        document.getElementById("brand")
+        .value.trim();
+
+    const purchaseDate =
+        document.getElementById("purchaseDate")
+        .value;
+
+    const warrantyExpiryDate =
+        document.getElementById("warrantyExpiryDate")
+        .value;
+
+
+    if (
+        productName === "" ||
+        brand === "" ||
+        purchaseDate === "" ||
+        warrantyExpiryDate === ""
+    ) {
+
+        document.getElementById("message")
+            .innerText =
+            "Please fill all warranty details.";
+
+        return;
+
+    }
+
+
+    const warrantyData = {
+
+        productName: productName,
+
+        brand: brand,
+
+        purchaseDate: purchaseDate,
+
+        warrantyExpiryDate: warrantyExpiryDate
+
+    };
+
+
+    fetch("/api/warranties", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(warrantyData)
+
+    })
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to add warranty"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(() => {
+
+        document.getElementById("message")
+            .innerText =
+            "Warranty added successfully!";
+
+
+        document.getElementById("productName")
+            .value = "";
+
+        document.getElementById("brand")
+            .value = "";
+
+        document.getElementById("purchaseDate")
+            .value = "";
+
+        document.getElementById("warrantyExpiryDate")
+            .value = "";
+
+        document.getElementById("bill")
+            .value = "";
+
+
+        viewWarranties();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        document.getElementById("message")
+            .innerText =
+            "Error adding warranty.";
+
+    });
+
+}
+
+
+/* ================================
+   VIEW WARRANTIES
+   ================================ */
+
+function viewWarranties() {
+
+    fetch("/api/warranties")
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load warranties"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(warranties => {
+
+        displayWarranties(warranties);
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        document.getElementById("warrantyList")
+            .innerHTML =
+            "<p>Error loading warranties.</p>";
+
+    });
+
+}
+
+
+/* ================================
+   SEARCH
+   ================================ */
+
+function searchWarranty() {
+
+    const searchText =
+        document.getElementById("searchProduct")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    fetch("/api/warranties")
+
+    .then(response => response.json())
+
+    .then(warranties => {
+
+        if (searchText === "") {
+
+            displayWarranties(warranties);
+
+            return;
+
+        }
+
+
+        const filtered =
+            warranties.filter(warranty =>
+
+                warranty.productName
+                    .toLowerCase()
+                    .includes(searchText)
+
+            );
+
+
+        displayWarranties(filtered);
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+    });
+
+}
+
+
+/* ================================
+   DISPLAY
+   ================================ */
+
+function displayWarranties(warranties) {
+
+    const list =
+        document.getElementById("warrantyList");
+
+
+    list.innerHTML = "";
+
+
+    if (warranties.length === 0) {
+
+        list.innerHTML =
+            "<p>No warranties found.</p>";
+
+        return;
+
+    }
+
+
+    warranties.forEach(warranty => {
+
+
+        const expiryDate =
+            new Date(
+                warranty.warrantyExpiryDate
+            );
+
+
+        const today =
+            new Date();
+
+
+        today.setHours(0,0,0,0);
+
+        expiryDate.setHours(0,0,0,0);
+
+
+        const difference =
+            expiryDate - today;
+
+
+        const daysLeft =
+            Math.ceil(
+                difference /
+                (1000 * 60 * 60 * 24)
+            );
+
+
+        let statusHTML;
+
+
+        if (daysLeft < 0) {
+
+            statusHTML = `
+                <div class="status expired-status">
+                    ❌ Warranty Expired
+                </div>
+            `;
+
+        }
+
+        else if (daysLeft === 0) {
+
+            statusHTML = `
+                <div class="status expired-status">
+                    ⚠️ Warranty Expires Today
+                </div>
+            `;
+
+        }
+
+        else if (daysLeft <= 30) {
+
+            statusHTML = `
+                <div class="status soon-status">
+                    ⚠️ Warranty Expires Soon
+                    (${daysLeft} days left)
+                </div>
+            `;
+
+        }
+
+        else {
+
+            statusHTML = `
+                <div class="status valid-status">
+                    ✅ Warranty Active
+                    (${daysLeft} days left)
+                </div>
+            `;
+
+        }
+
+
+        list.innerHTML += `
+
+            <div class="warranty-card">
+
+                <h3>
+                    ${warranty.productName}
+                </h3>
+
+                <p>
+                    <b>Brand:</b>
+                    ${warranty.brand}
+                </p>
+
+                <p>
+                    <b>Purchase Date:</b>
+                    ${warranty.purchaseDate}
+                </p>
+
+                <p>
+                    <b>Warranty Expiry:</b>
+                    ${warranty.warrantyExpiryDate}
+                </p>
+
+                ${statusHTML}
+
+
+                <button
+                    class="action-btn edit-btn"
+                    onclick="editWarranty(
+                        ${warranty.id},
+                        '${escapeQuotes(warranty.productName)}',
+                        '${escapeQuotes(warranty.brand)}',
+                        '${warranty.purchaseDate}',
+                        '${warranty.warrantyExpiryDate}'
+                    )">
+
+                    Edit Warranty
+
+                </button>
+
+
+                <button
+                    class="action-btn delete-btn"
+                    onclick="deleteWarranty(
+                        ${warranty.id}
+                    )">
+
+                    Delete Warranty
+
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* ================================
+   EDIT
+   ================================ */
+
+function editWarranty(
+    id,
+    productName,
+    brand,
+    purchaseDate,
+    warrantyExpiryDate
+) {
+
+    document.getElementById(
+        "editSection"
+    ).style.display = "block";
+
+
+    document.getElementById("editId")
+        .value = id;
+
+
+    document.getElementById("editProductName")
+        .value = productName;
+
+
+    document.getElementById("editBrand")
+        .value = brand;
+
+
+    document.getElementById("editPurchaseDate")
+        .value = purchaseDate;
+
+
+    document.getElementById(
+        "editWarrantyExpiryDate"
+    ).value = warrantyExpiryDate;
+
+
+    document.getElementById(
+        "editSection"
+    ).scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+/* ================================
+   UPDATE
+   ================================ */
+
+function updateWarranty() {
+
+    const id =
+        document.getElementById("editId")
+        .value;
+
+
+    const productName =
+        document.getElementById("editProductName")
+        .value.trim();
+
+
+    const brand =
+        document.getElementById("editBrand")
+        .value.trim();
+
+
+    const purchaseDate =
+        document.getElementById("editPurchaseDate")
+        .value;
+
+
+    const warrantyExpiryDate =
+        document.getElementById(
+            "editWarrantyExpiryDate"
+        ).value;
+
+
+    if (
+        productName === "" ||
+        brand === "" ||
+        purchaseDate === "" ||
+        warrantyExpiryDate === ""
+    ) {
+
+        alert(
+            "Please fill all warranty details."
+        );
+
+        return;
+
+    }
+
+
+    const updatedWarranty = {
+
+        productName: productName,
+
+        brand: brand,
+
+        purchaseDate: purchaseDate,
+
+        warrantyExpiryDate:
+            warrantyExpiryDate
+
+    };
+
+
+    fetch(
+        "/api/warranties/" + id,
+        {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body:
+                JSON.stringify(
+                    updatedWarranty
+                )
+
+        }
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update warranty"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(() => {
+
+        alert(
+            "Warranty updated successfully!"
+        );
+
+        cancelEdit();
+
+        viewWarranties();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert(
+            "Error updating warranty."
+        );
+
+    });
+
+}
+
+
+/* ================================
+   CANCEL EDIT
+   ================================ */
+
+function cancelEdit() {
+
+    document.getElementById(
+        "editSection"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "editId"
+    ).value = "";
+
+}
+
+
+/* ================================
+   DELETE
+   ================================ */
+
+function deleteWarranty(id) {
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this warranty?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    fetch(
+        "/api/warranties/" + id,
+        {
+            method: "DELETE"
+        }
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to delete warranty"
+            );
+
+        }
+
+    })
+
+    .then(() => {
+
+        alert(
+            "Warranty deleted successfully!"
+        );
+
+        viewWarranties();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert(
+            "Error deleting warranty."
+        );
+
+    });
+
+}
+
+
+/* ================================
+   ESCAPE QUOTES
+   ================================ */
+
+function escapeQuotes(value) {
+
+    return value
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
+
+}
+
+</script>
+
+
+</body>
+
+</html>
